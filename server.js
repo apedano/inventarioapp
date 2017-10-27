@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-
+/*
 const forceSSL = function() {
   return function (req, res, next) {
     if (req.headers['x-forwarded-proto'] !== 'https') {
@@ -14,6 +14,7 @@ const forceSSL = function() {
 }
 // ForceSSL middleware
 app.use(forceSSL());
+*/
 app.use(express.static(__dirname + '/dist'));
 app.listen(process.env.PORT || 8080);
 
