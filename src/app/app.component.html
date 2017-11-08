@@ -14,6 +14,13 @@
   </li>
 </ul>
 
+<h2>Add a document to database</h2>
+<p>Location ID: <input type="number" min="1" max="99999" [(ngModel)]="newItem.locationId" name="locationId"></p>
+<p>Location name: <input type="text" [(ngModel)]="newItem.locationName" name="description"></p>
+<p>Scatolo ID: <input type="number" min="1" max="99999" [(ngModel)]="newItem.caseId" name="caseId"></p>
+<p>Descrizione: <textarea [(ngModel)]="newItem.description" name="description" placeholder="Description.."></textarea></p>
+<input type="submit" value="Add Item" (click)="addItem()">
+
 <h2>Here are some links to help you start: </h2>
 <ul>
   <li>

@@ -1,6 +1,6 @@
-export interface Item {
-    description:string,
-    caseId:number,
-    locationId:number,
-    locationName:string
+export class Item {
+    public caseId: number;
+    public description: string;
+    public locationName: string;
+    public locationId: number;
 }

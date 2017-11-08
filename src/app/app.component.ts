@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,13 +15,23 @@ export class AppComponent {
   title = 'app';
   itemsCol: AngularFirestoreCollection<Item>;
   items: Observable<Item[]>;
+  newItem: Item;
 
   constructor(private afs: AngularFirestore) {}
   
-    ngOnInit() {
-      this.itemsCol = this.afs.collection('items');
-      this.items = this.itemsCol.valueChanges();
-  
-    }
+  ngOnInit() {
+    this.itemsCol = this.afs.collection('items');
+    this.items = this.itemsCol.valueChanges();
+    this.newItem = new Item();
+  }
+
+  addItem() {
+    this.itemsCol.add({
+      'description': this.newItem.description,
+      'locationName': this.newItem.locationName,
+      'locationId': this.newItem.locationId,
+      'caseId': this.newItem.caseId,
+    });
+  }
   
 }
