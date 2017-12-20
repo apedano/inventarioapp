@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Item } from './model/item.type';
 //firestore integration imports
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+//import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { ItemService } from './service/item.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -13,25 +14,18 @@ import 'rxjs/add/operator/map';
 })
 export class AppComponent {
   title = 'app';
-  itemsCol: AngularFirestoreCollection<Item>;
   items: Observable<Item[]>;
   newItem: Item;
 
-  constructor(private afs: AngularFirestore) {}
+  constructor(private itemService: ItemService) {}
   
   ngOnInit() {
-    this.itemsCol = this.afs.collection('items');
-    this.items = this.itemsCol.valueChanges();
+    this.items = this.itemService.getAllItems();
     this.newItem = new Item();
   }
 
   addItem() {
-    this.itemsCol.add({
-      'description': this.newItem.description,
-      'locationName': this.newItem.locationName,
-      'locationId': this.newItem.locationId,
-      'caseId': this.newItem.caseId,
-    });
+    this.itemService.addNewItem(this.newItem);
   }
   
 }

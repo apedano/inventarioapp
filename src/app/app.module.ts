@@ -3,23 +3,18 @@ import { NgModule } from '@angular/core';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { FormsModule } from '@angular/forms';
-
+import { environment } from '../environments/environment'
+import { ItemService } from './service/item.service';
+export const  firebaseConfig = environment.fireBaseConfig;
 
 import { AppComponent } from './app.component';
+import { FilterPipe } from './filter.pipe';
 
-// Paste in your credentials that you saved earlier
-var firebaseConfig = {
-    apiKey: "AIzaSyBEYuK5In_3f5ElFZ0VrptxSDH3jHKKqOs",
-    authDomain: "inventarioproject.firebaseapp.com",
-    databaseURL: "https://inventarioproject.firebaseio.com",
-    projectId: "inventarioproject",
-    storageBucket: "inventarioproject.appspot.com",
-    messagingSenderId: "677173478227"
-};
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -27,7 +22,7 @@ var firebaseConfig = {
     AngularFirestoreModule,
     FormsModule                            
   ],
-  providers: [],
+  providers: [ItemService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
