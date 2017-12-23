@@ -1,10 +1,13 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, EventEmitter } from '@angular/core';
+
 import { Item } from './model/item.type';
 
 @Component({
     selector: 'item-component',
+    //custom event emitter, emits item description when element is clicked
+    outputs: ['itemEmitter'],
     template: `
-        <div class="card">
+        <div class="card" (click)="emitItem()">
             <img src="{{item.imageUrl}}" alt="Avatar" style="width:50%;">
             <div class="container">
                 <h4><b>{{item.description}}</b></h4> 
@@ -38,6 +41,19 @@ import { Item } from './model/item.type';
   })
 export class ItemComponent {
     @Input() public item: Item;
+    //the event emitter implements Observable pattern
+    //eny component can subscribe to connected component output
+    //and receive emitted event (in this case a string value)
+    itemEmitter : EventEmitter<Item>;
+
+    constructor(){
+        this.itemEmitter = new EventEmitter();
+    }
+
+    //this method emit a new event from EventEmitter 
+    emitItem() : void {
+        this.itemEmitter.emit(this.item);
+    }
 }
   
 
