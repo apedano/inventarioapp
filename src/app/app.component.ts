@@ -18,7 +18,6 @@ export class AppComponent {
   title = 'app';
   items: Observable<Item[]>;
   newItem: Item;
-  searchText: String;
 
   constructor(private itemService: ItemService) {}
   

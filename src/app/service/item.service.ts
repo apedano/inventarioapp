@@ -23,6 +23,7 @@ export class ItemService{
             'locationName': newItem.locationName,
             'locationId': newItem.locationId,
             'caseId': newItem.caseId,
+            'imageUrl' : newItem.imageUrl
           });
     }
 }

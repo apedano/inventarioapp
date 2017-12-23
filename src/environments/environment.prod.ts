@@ -7,5 +7,5 @@ export const environment = {
     projectId: "inventarioproject",
     storageBucket: "inventarioproject.appspot.com",
     messagingSenderId: "677173478227"
-}
+  }
 };
