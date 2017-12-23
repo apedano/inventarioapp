@@ -8,12 +8,14 @@ import { ItemService } from './service/item.service';
 export const  firebaseConfig = environment.firebaseConfig;
 
 import { AppComponent } from './app.component';
+import { ItemComponent } from './item.component';
 import { FilterPipe } from './filter.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    ItemComponent,
     FilterPipe
   ],
   imports: [

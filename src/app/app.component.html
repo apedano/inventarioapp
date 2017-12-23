@@ -7,13 +7,9 @@
 </div>
 <h2>Here the list of items form Firestore: </h2>
 <input [(ngModel)]="searchText" placeholder="search text goes here">
-<ul *ngFor="let item of items | async | filter : searchText">
-  <li>
-    <strong>{{item.description}}</strong>
-    <br>
-    {{item.locationName}}
-  </li>
-</ul>
+<div *ngFor="let item of items | async | filter : searchText" style="width:50%; text-align:center">
+  <item-component [item]="item"></item-component>
+</div>
 
 <h2>Add a document to database</h2>
 <p>Location ID: <input type="number" min="1" max="99999" [(ngModel)]="newItem.locationId" name="locationId"></p>

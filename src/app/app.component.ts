@@ -6,6 +6,8 @@ import { ItemService } from './service/item.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { ItemComponent } from './item.component';
+
 
 @Component({
   selector: 'app-root',
