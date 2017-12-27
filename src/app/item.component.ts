@@ -7,7 +7,16 @@ import { Item } from './model/item.type';
     //custom event emitter, emits item description when element is clicked
     outputs: ['itemEmitter'],
     template: `
-        <div class="card" style="width: 300px;" (click)="emitItem()">
+        <div class="basic-card" (click)="emitItem()">
+            <div class="basic-card-image">
+                <img src="{{item.imageUrl}}" alt="{{item.description}}-img">
+            </div>
+            <div class="basic-card-content content callout primary">
+            <h4>{{item.locationName}}</h4>
+            <p>{{item.description}}</p>
+            </div>
+        
+            <!--
             <div class="card-divider">
                 Item
             </div>
@@ -15,26 +24,47 @@ import { Item } from './model/item.type';
                 <img src="{{item.imageUrl}}" alt="{{item.description}}-img">
             </div>
             <div class="card-section">
-                <h4>{{item.locationName}}</h4>
+                <p><b>{{item.locationName}}</b></p>
                 <p>{{item.description}}</p>
-            </div>
+            </div>-->
         </div>
     `,  
     styles: [`
-        .card {
-            background-color:#f0ffff;
+
+        .basic-card {
+            @include card-container;
+        
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            margin: 0 auto;
+            width: 100%;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             transition: 0.3s;
             border-radius: 5px;
         }
         
-        .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        .basic-card-image {
+            text-align:center;
+            grid-row-end: 4;
+            grid-row-start: 1;
+        
+            img {
+                width: 100%;
+            }
         }
         
-        img {
-            border-radius: 5px 5px 0 0;
+        .basic-card-content {
+            border: 0;
+            grid-row-start: 3 / 4;
+            margin: 0;
+            overflow: scroll;
         }
+
+        .basic-card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+      
     `],
   })
 export class ItemComponent {

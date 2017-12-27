@@ -15,7 +15,7 @@ import { ItemComponent } from './item.component';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'Inventario App';
   items: Observable<Item[]>;
   newItem: Item;
 

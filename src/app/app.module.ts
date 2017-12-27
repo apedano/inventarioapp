@@ -11,6 +11,7 @@ export const  firebaseConfig = environment.firebaseConfig;
 import { AppComponent } from './app.component';
 import { ItemComponent } from './item.component';
 import { ItemListComponent } from './item-list.component';
+import { ItemFormComponent } from './item-form.component';
 import { FilterPipe } from './filter.pipe';
 
 
@@ -19,6 +20,7 @@ import { FilterPipe } from './filter.pipe';
     AppComponent,
     ItemComponent,
     ItemListComponent,
+    ItemFormComponent,
     FilterPipe
   ],
   imports: [
