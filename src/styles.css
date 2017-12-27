@@ -1,1 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+/*Angular-CLI uses webpack under the hood and only configures it*/
+/*https://blog.angularindepth.com/this-is-how-angular-cli-webpack-delivers-your-css-styles-to-the-client-d4adf15c4975*/
+/*https://ciphertrick.com/2017/05/22/create-your-first-angular-application-with-angular-cli/*/
+ 

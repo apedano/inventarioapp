@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule /*ngModel, ngForm*/, ReactiveFormsModule /* formControl, ngFormGroup */ } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { FormsModule } from '@angular/forms';
 import { environment } from '../environments/environment'
 import { ItemService } from './service/item.service';
 
