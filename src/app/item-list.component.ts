@@ -6,20 +6,21 @@ import { Item } from './model/item.type';
 @Component({
     selector : 'item-list',
     template : `
-        <div class="item-list-container">
-        <div><input [(ngModel)]="searchText" placeholder="search text goes here"></div>
-        <div *ngFor="let item of itemList | async | filter : searchText" style="width:50%; text-align:center">
-            <!-- here we subscribe to the event emitter output of item-component, (here as input) receiving the emitted event--> 
-            <item-component (itemEmitter)="handleEvent($event)" [item]="item"></item-component>
+        <div class="grid-container fluid">
+            <div class="grid-x grid-margin-x">
+                <div class="small-4 large-offset-4 cell"><input [(ngModel)]="searchText" placeholder="search text goes here"></div>
+            </div>
         </div>
+        <div class="grid-x grid-padding-x small-up-2 medium-up-4 large-up-6">
+            <div *ngFor="let item of itemList | async | filter : searchText" class="cell small-offset-1">
+                <!-- here we subscribe to the event emitter output of item-component, (here as input) receiving the emitted event--> 
+                <item-component (itemEmitter)="handleEvent($event)" [item]="item"></item-component>
+            </div>
         </div>
     
     `,
     styles : [ `
-        div.item-list-container {
-            width: 100%;
-            text-align: center;
-        }
+        
         `
     ]
 

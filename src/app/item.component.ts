@@ -7,22 +7,24 @@ import { Item } from './model/item.type';
     //custom event emitter, emits item description when element is clicked
     outputs: ['itemEmitter'],
     template: `
-        <div class="card" (click)="emitItem()">
-            <img src="{{item.imageUrl}}" alt="Avatar" style="width:50%;">
-            <div class="container">
-                <h4><b>{{item.description}}</b></h4> 
-                <p>{{item.locationName}}</p> 
+        <div class="card" style="width: 300px;" (click)="emitItem()">
+            <div class="card-divider">
+                Item
             </div>
-        </div> 
+            <div class="card section">
+                <img src="{{item.imageUrl}}" alt="{{item.description}}-img">
+            </div>
+            <div class="card-section">
+                <h4>{{item.locationName}}</h4>
+                <p>{{item.description}}</p>
+            </div>
+        </div>
     `,  
     styles: [`
         .card {
             background-color:#f0ffff;
-            margin-top:15px;
-            margin-bottom:15px;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             transition: 0.3s;
-            width: 40%;
             border-radius: 5px;
         }
         
@@ -32,10 +34,6 @@ import { Item } from './model/item.type';
         
         img {
             border-radius: 5px 5px 0 0;
-        }
-        
-        .container {
-            padding: 2px 16px;
         }
     `],
   })
