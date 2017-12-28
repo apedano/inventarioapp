@@ -1,4 +1,5 @@
 export class Item {
+    public id: string;
     public caseId: number;
     public description: string;
     public locationName: string;

@@ -12,28 +12,16 @@ import { Item } from './model/item.type';
                 <img src="{{item.imageUrl}}" alt="{{item.description}}-img">
             </div>
             <div class="basic-card-content content callout primary">
-            <h4>{{item.locationName}}</h4>
+            <p class="itemId">{{item.id}}</p>
+            <p>{{item.locationName}}</p>
             <p>{{item.description}}</p>
             </div>
-        
-            <!--
-            <div class="card-divider">
-                Item
-            </div>
-            <div class="card section">
-                <img src="{{item.imageUrl}}" alt="{{item.description}}-img">
-            </div>
-            <div class="card-section">
-                <p><b>{{item.locationName}}</b></p>
-                <p>{{item.description}}</p>
-            </div>-->
         </div>
     `,  
     styles: [`
 
         .basic-card {
             @include card-container;
-        
             display: grid;
             grid-template-columns: 1fr;
             grid-template-rows: 1fr 1fr 1fr;
@@ -42,6 +30,16 @@ import { Item } from './model/item.type';
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             transition: 0.3s;
             border-radius: 5px;
+        }
+
+        .basic-card p {
+            font-size: 8px;
+            margin-bottom: 0;
+            font-size: inherit;
+        }
+
+        .basic-card p.itemId {
+            font-weight: bold;
         }
         
         .basic-card-image {

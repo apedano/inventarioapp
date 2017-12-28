@@ -12,32 +12,8 @@
       <div class="callout">
         <h4>Here the list of items form Firestore: </h4>
         <item-list [itemList]="items"></item-list>
-        <item-form></item-form>
       </div>
     </div>
   </div>
 </div>
-
-
-
-<h2>Add a document to database</h2>
-<p>Location ID: <input type="number" min="1" max="99999" [(ngModel)]="newItem.locationId" name="locationId"></p>
-<p>Location name: <input type="text" [(ngModel)]="newItem.locationName" name="description"></p>
-<p>Scatolo ID: <input type="number" min="1" max="99999" [(ngModel)]="newItem.caseId" name="caseId"></p>
-<p>Descrizione: <textarea [(ngModel)]="newItem.description" name="description" placeholder="Description.."></textarea></p>
-<p>Image Url: <input type="text" [(ngModel)]="newItem.imageUrl" name="imageUrl"></p>
-<input type="submit" value="Add Item" (click)="addItem()">
-
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 

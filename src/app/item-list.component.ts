@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ItemFormComponent } from './item-form.component'
 
 import { ItemComponent } from './item.component';
 import { Item } from './model/item.type';
@@ -20,6 +21,7 @@ import { Item } from './model/item.type';
                 <item-component (itemEmitter)="handleEvent($event)" [item]="item"></item-component>
             </div>
         </div>
+        <item-form></item-form>
     
     `,
     styles : [ `
@@ -30,11 +32,14 @@ import { Item } from './model/item.type';
 })
 export class ItemListComponent{
     @Input() public itemList : Item[];
+    @ViewChild(ItemFormComponent) itemForm : ItemFormComponent; 
+    
     searchText: String;
 
-    //the emitted event is a string
+    //the emitted event is an item
     handleEvent(event : Item) : void {
-     alert("ItemList Components says: " + event.description + " whas clicked"); 
+     alert("Inner Form populated for item  [" + event.description + "] edit");
+     this.itemForm.populate(event); 
     }
 }
 

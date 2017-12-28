@@ -14,6 +14,9 @@ import { ItemListComponent } from './item-list.component';
 import { ItemFormComponent } from './item-form.component';
 import { FilterPipe } from './filter.pipe';
 
+import { PositiveIntegerValidatorDirective } from './validators/positive-int.validator';
+import { ShowErrorsComponent } from './show-errors.component';
+
 
 @NgModule({
   declarations: [
@@ -21,7 +24,9 @@ import { FilterPipe } from './filter.pipe';
     ItemComponent,
     ItemListComponent,
     ItemFormComponent,
-    FilterPipe
+    FilterPipe,
+    ShowErrorsComponent,
+    PositiveIntegerValidatorDirective
   ],
   imports: [
     BrowserModule,

@@ -25,9 +25,5 @@ export class AppComponent {
     this.items = this.itemService.getAllItems();
     this.newItem = new Item();
   }
-
-  addItem() {
-    this.itemService.addNewItem(this.newItem);
-  }
   
 }
