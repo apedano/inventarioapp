@@ -44,9 +44,9 @@ export abstract class GenericService<T> {
         const jsonDataObj = JSON.parse(JSON.stringify(dataObj));
         console.log("serialized dataObj: " + jsonDataObj);
         const docReference : AngularFirestoreDocument<T> = this.afs.doc<T>(this.collectionPath + '/' + id);
-        const exists = docReference.snapshotChanges().subscribe(action => {return action.payload.exists});
+        const exists = id ? docReference.snapshotChanges().subscribe(action => {return action.payload.exists}) : false;
         exists ? 
-        console.log("Document already exists, document will be updated") :
+        console.log("Document with id " + id + " already exists, document will be updated") :
         console.log("Document doesn't exists, new document will be created");  
         if(exists){
             return docReference.update(jsonDataObj);
