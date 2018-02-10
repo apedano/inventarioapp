@@ -1,13 +1,5 @@
 import { Component } from '@angular/core';
 import { Item } from './model/item.type';
-//firestore integration imports
-//import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { ItemService } from './service/item.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-
-import { ItemComponent } from './item.component';
-
 
 @Component({
   selector: 'app-root',
@@ -16,14 +8,4 @@ import { ItemComponent } from './item.component';
 })
 export class AppComponent {
   title = 'Inventario App';
-  items: Observable<Item[]>;
-  newItem: Item;
-
-  constructor(private itemService: ItemService) {}
-  
-  ngOnInit() {
-    this.items = this.itemService.getAllItems();
-    this.newItem = new Item();
-  }
-  
 }

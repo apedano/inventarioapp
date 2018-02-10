@@ -1,4 +1,9 @@
 import { Component, ViewChild, Input } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
+import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Observable';
+
 import { Item } from './model/item.type';
 import { ItemService } from './service/item.service';
 import { NgForm } from '@angular/forms';
@@ -103,6 +108,7 @@ import { NgForm } from '@angular/forms';
                     </div>
                     <div class="small-4 cell medium-cell-block">
                         <button *ngIf="f.valid"  type="submit" class="primary button">Save</button>
+                        <div *ngIf="message" class="success">{{message}}</div>
                     </div>
                 </div>
             </div>
@@ -116,9 +122,36 @@ export class ItemFormComponent {
     
     @Input() item : Item = new Item();
     
-    constructor(private itemService: ItemService){}
+    private message: string = "";
+
+    constructor(
+        private itemService: ItemService,
+        private route: ActivatedRoute,
+        private router: Router
+    ){}
+
+    ngOnInit(){
+        
+        //TODO: testare la presenza dell'id dalla request;
+        //const itemObs : Observable<Item> = this.route.paramMap
+        //.switchMap((params: ParamMap) =>
+        //  this.itemService.getItem(params.get('id')));
+        //itemObs.subscribe(item => this.item = item);
+        this.route.params.subscribe(params =>{
+            console.log(params);
+            if(params['id']){
+                const id = params['id'];
+                console.log("Request item form with id:" + id);
+                this.itemService.getSingle(id).subscribe(item => this.item = item);
+            } else {
+                console.log('id not found in params')
+            }
+        });
+    }
 
     populate(editItem : Item){
+        //this.form.resetForm();
+        this.message = "";
         this.item = editItem;
     }
 
@@ -130,12 +163,17 @@ export class ItemFormComponent {
         if(form.valid){
             console.log("Submitted form value: ", form);
             console.log("Populated item model: ", this.item);
-            this.itemService.addNewItem(this.item);
-            form.resetForm(); // or form.reset();
-            console.log("Item saved!");
+            //this.itemService.addNewItem(this.item);
+            //FIXME: l'esecuzione entra in un loop infinito, per cui l'oggetto viene salvato infinite volte
+            const opPromise : Promise<void> = this.itemService.upsert(this.item, this.item.id);
+            this.message = "Item saving...";
+            opPromise.then(() => {
+                console.log("Upsert operation completed!");
+                //form.resetForm(); // or form.reset();
+                this.message = "Item saved!!";
+            });
         } else {
             alert("Form is invalid. Nothing submitted!!");
         }
-        
     }
 }
