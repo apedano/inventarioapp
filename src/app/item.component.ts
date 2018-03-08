@@ -5,16 +5,22 @@ import { Item } from './model/item.type';
 @Component({
     selector: 'item-component',
     //custom event emitter, emits item description when element is clicked
-    outputs: ['itemEmitter'],
+    outputs: ['editEmitter', 'deleteEmitter'],
     template: `
-        <div class="basic-card" (click)="emitItem()">
+        <div class="basic-card">
             <div class="basic-card-image">
                 <img src="{{item.imageUrl}}" alt="{{item.description}}-img">
             </div>
             <div class="basic-card-content content callout primary">
-            <p class="itemId">{{item.id}}</p>
-            <p>{{item.locationName}}</p>
-            <p>{{item.description}}</p>
+                <p class="itemId">{{item.id}}</p>
+                <p>{{item.locationName}}</p>
+                <p>{{item.description}}</p>
+            </div>
+            <div class=".basic-card-content button-group content">
+                <!--<a class="secondary button">View</a>-->
+                <a class="button" (click)="emitEdit()">Edit</a>
+                <!--<a class="warning button">Share</a>-->
+                <a class="alert button" data-open="confirmModalId" (click)="emitDelete()">Delete</a>
             </div>
         </div>
     `,  
@@ -70,15 +76,22 @@ export class ItemComponent {
     //the event emitter implements Observable pattern
     //eny component can subscribe to connected component output
     //and receive emitted event (in this case a string value)
-    itemEmitter : EventEmitter<Item>;
+    editEmitter : EventEmitter<Item>;
+    deleteEmitter : EventEmitter<Item>;
 
     constructor(){
-        this.itemEmitter = new EventEmitter();
+        this.editEmitter = new EventEmitter();
+        this.deleteEmitter = new EventEmitter();
     }
 
     //this method emit a new event from EventEmitter 
-    emitItem() : void {
-        this.itemEmitter.emit(this.item);
+    emitEdit() : void {
+        this.editEmitter.emit(this.item);
+    }
+
+    //this method emit a new event from EventEmitter 
+    emitDelete() : void {
+        this.deleteEmitter.emit(this.item);
     }
 }
   

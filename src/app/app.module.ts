@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule /*ngModel, ngForm*/, ReactiveFormsModule /* formControl, ngFormGroup */ } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { DialogsModule} from '../dialogs/dialogs.module';
 import { FilterPipe } from './filter.pipe';
 
 import { environment } from '../environments/environment'
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
+  //lone application's components, directives or pipes
   declarations: [
     AppComponent,
     ItemComponent,
@@ -55,7 +57,9 @@ const appRoutes: Routes = [
     PositiveIntegerValidatorDirective,
     PageNotFoundComponent
   ],
+  //external modules import
   imports: [
+    //DOM rendering, sanitazion and location
     BrowserModule,
     AngularFireModule.initializeApp(firebaseConfig),  
     AngularFirestoreModule,
@@ -63,9 +67,15 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
-    )                            
+    ),
+    //customized modules
+    DialogsModule                            
   ],
+  //array of services used by application
   providers: [ItemService],
+  //application launches with the root ngModule which, itself, launches
+  //the bootstrap component adding its template to the browser's DOM. This components represents 
+  //the root of the tree application 
   bootstrap: [AppComponent]
 })
 export class AppModule { }

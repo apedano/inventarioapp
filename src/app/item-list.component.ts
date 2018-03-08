@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FilterPipe } from './filter.pipe';
 
@@ -8,10 +8,14 @@ import { ItemFormComponent } from './item-form.component';
 import { ItemComponent } from './item.component';
 import { Item } from './model/item.type';
 
+declare var $:any;
+
 @Component({
     selector : 'item-list',
     template : `
-
+        <div #dialogContainer id="dialogContainer">
+            <ng-template #dialogInternal></ng-template>
+        </div>
         <div class="grid-x grid-margin-x" *ngIf="loading">
             <div class="small-12 cell">
                 <div class="cssload-container">
@@ -33,10 +37,10 @@ import { Item } from './model/item.type';
                 </div>
             </div>
         </div>
-        <div class="grid-x grid-padding-x small-up-4 medium-up-4 large-up-4">
+        <div class="grid-x grid-padding-x medium-up-4 medium-up-4 large-up-4">
             <div *ngFor="let item of items | async | filter : searchText" class="cell">
                 <!-- here we subscribe to the event emitter output of item-component, (here as input) receiving the emitted event--> 
-                <item-component (itemEmitter)="handleEvent($event)" [item]="item"></item-component>
+                <item-component (editEmitter)="handleEdit($event)" (deleteEmitter)="handleDelete($event)" [item]="item"></item-component>
             </div>
         </div>
         <div *ngIf="!loading">
@@ -135,27 +139,53 @@ import { Item } from './model/item.type';
 })
 export class ItemListComponent{
     items : Observable<Item[]>;
+    currentItem : Item;
     //addresses the ItemFormComponent inside component template
     @ViewChild(ItemFormComponent) itemForm : ItemFormComponent;
-    
+    @ViewChild('dialogInternal', {read: ViewContainerRef}) internalViewContainerRef: ViewContainerRef;
+
     public title : String;
     searchText: String;
 
     loading : Boolean = true;
 
-    constructor(private itemService: ItemService){
+    constructor(private itemService: ItemService, private componentFactoryResolver: ComponentFactoryResolver){
     };
 
     ngOnInit(){
         this.items = this.itemService.getAll();
         this.items.subscribe(() => this.loading = false);
+        this.items.map(arr => arr[0]).subscribe(item => this.currentItem = item);
         console.log("Item list loaded...");
+        console.log("Loading foundation reveal for confirm modal...");
+        $(document).foundation();
+
     }
 
     //the emitted event is an item
-    handleEvent(event : Item) : void {
+    handleEdit(event : Item) : void {
      //alert("Inner Form populated for item  [" + event.description + "] edit");
      this.itemForm.populate(event); 
+    }
+
+    //the emitted event is an item
+    handleDelete(event : Item) : void {
+        this.currentItem = event;
+        this.itemService.handleDelete(
+            event, 
+            event.id, 
+            this.internalViewContainerRef, 
+            this.componentFactoryResolver,
+            this.deleteCallback,
+            this.itemForm
+        );
+    }
+
+    //this function is executed after item deletion, it must be of the same type of OkCallback of generic service
+    deleteCallback(itemForm : ItemFormComponent){
+        console.log("Deletion complete. Deletion callback execution...");
+        itemForm.initNew();
+        console.log("Delete callback executed...");
     }
 }
 
