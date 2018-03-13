@@ -164,8 +164,9 @@ export class ItemFormComponent {
             console.log("Submitted form value: ", form);
             console.log("Populated item model: ", this.item);
             //this.itemService.addNewItem(this.item);
-            //FIXME: l'esecuzione entra in un loop infinito, per cui l'oggetto viene salvato infinite volte
-            const opPromise : Promise<void> = this.itemService.upsert(this.item, this.item.id);
+            
+            //const opPromise : Promise<void> = this.itemService.upsert(this.item, this.item.id);
+            const opPromise : Promise<void> = this.itemService.upsertTransactional(this.item, this.item.id);
             this.message = "Item saving...";
             opPromise.then(() => {
                 console.log("Upsert operation completed!");

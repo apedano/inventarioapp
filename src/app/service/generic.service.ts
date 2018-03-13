@@ -1,5 +1,6 @@
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { DocumentSnapshot}   from 'firebase/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import { DocumentSnapshot }   from 'firebase/firestore';
+import { FirebaseApp} from 'angularfire2';
 import { ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
@@ -14,9 +15,7 @@ export abstract class GenericService<T> {
     protected firestoreCollection : AngularFirestoreCollection<T>;
     protected allModels : Observable<T[]>;
 
-    
-
-    constructor(protected afs: AngularFirestore, protected collectionPath: string){
+    constructor(protected afs: AngularFirestore, protected collectionPath: string, protected fb : FirebaseApp){
         //called first time before the ngOnInit()
         console.log("Output membro abstract getCollectionPath(): " + this.collectionPath);
         this.firestoreCollection = this.afs.collection(this.collectionPath);
@@ -25,7 +24,7 @@ export abstract class GenericService<T> {
             return actions.map(a => {
                 return  this.fromDocumentSnapshotToModel(a.payload.doc); 
             });
-          });
+        });
     }
 
     protected abstract fromDocumentSnapshotToModel(snapshot : DocumentSnapshot);
@@ -42,6 +41,47 @@ export abstract class GenericService<T> {
             console.log("Returning object with id: "+ id);
             return  this.fromDocumentSnapshotToModel(action.payload);
           }); 
+    }
+
+    upsertTransactional<T>(dataObj : T, id : string) : Promise<void> {
+        const jsonDataObj = JSON.parse(JSON.stringify(dataObj));
+        //console.log("serialized dataObj: " + JSON.stringify(jsonDataObj));
+        //we have to reconstruct collection of documents because here we need transaction support
+        const collectionReference = this.fb.firestore().collection(this.collectionPath);
+        //if id is undefined we don't need to use transaction. We only have to add a new document to collection
+        if(!id){
+            return this.firestoreCollection.add(jsonDataObj).then(
+                //success function
+                function (value) {
+                    console.log("It succeeded with " + value);
+                },
+                //failure function
+                function (error) {
+                    console.log("It failed with " + error);
+                } 
+              );        
+        }
+        //here we are sure id is not undefined, we can load document form collection.
+        const docReference = collectionReference.doc(id);
+        return this.fb.firestore().runTransaction(
+            transaction => {
+                return transaction.get(docReference).then(doc => {
+                    if(!doc.exists){
+                        console.log("Document with id [" + id + "] doesn't exists. A new Document will be created!");
+                        return transaction.set(docReference, jsonDataObj);
+                    } else {
+                        console.log("Document with id [" + id + "] already exists. It will be updated!");
+                        return transaction.update(docReference, jsonDataObj);    
+                    }
+
+                });
+            }
+        ).then(() => {
+            console.log("Transaction successfully committed!");
+        }).catch(function(error) {
+            console.log("Transaction failed: ", error);
+            Promise.reject(error);
+        });        
     }
 
     //this method insert document into collection if id not exists, update document 
@@ -72,6 +112,7 @@ export abstract class GenericService<T> {
               );
                 
         }
+        
     }
 
     delete<T>(id : string) : Promise<void> {
@@ -92,7 +133,7 @@ export abstract class GenericService<T> {
         confirmDialogComponentInstance.dialogTitle = "Titolo del modal" + id;
         confirmDialogComponentInstance.confirmMessage = "Cancellare oggetto con id :[" + id + "]  ?";
         confirmDialogComponentInstance.viewContainerRef = viewContainerRef;
-        //TODO: add a callback function
+        //add callback to ok button click event (through event emitter of confirm dialog)
         confirmDialogComponentInstance.okEmitter.subscribe(() => this.confirmedDelete(id, okCallback, okCallbackParam));
         //detect change hook to detect dynamic component changes to Angular change detection system 
         confirmDialogComponent.changeDetectorRef.detectChanges();
